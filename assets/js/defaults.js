@@ -42,12 +42,12 @@ window.SITE_DEFAULTS = {
     image: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=800&q=80'
   },
   services: [
-    { id: 's1', icon: '🌸', title: 'Premium Cilt Bakımı', desc: 'Cilt tipi analizine göre özel protokol. Hydrafacial, oksijen, LED terapi.', price: '1.450 ₺ – 3.200 ₺', duration: '60–90 dk', visible: true },
-    { id: 's2', icon: '✨', title: 'Kalıcı Makyaj', desc: 'Kaş microblading, powder brows, eyeliner ve dudak kontürü.', price: '3.500 ₺ – 6.500 ₺', duration: '2–3 saat', visible: true },
-    { id: 's3', icon: '💇‍♀️', title: 'Saç Tasarım & Renk', desc: 'Balayage, air-touch, keratin, botoks ve kişiye özel kesim.', price: '850 ₺ – 2.800 ₺', duration: '1.5–3 saat', visible: true },
-    { id: 's4', icon: '💅', title: 'Manikür & Nail Art', desc: 'Klasik, jel, protez tırnak ve özel tasarım nail art.', price: '450 ₺ – 1.100 ₺', duration: '45–90 dk', visible: true },
-    { id: 's5', icon: '🧖‍♀️', title: 'Lazer & Epilasyon', desc: 'Alexandrite lazer ile kadın ve erkek epilasyon.', price: 'Seans 900 ₺’den', duration: '15–60 dk', visible: true },
-    { id: 's6', icon: '💆', title: 'Masaj & Spa', desc: 'Aromaterapi, hot stone ve derin doku masajı.', price: '950 ₺ – 1.800 ₺', duration: '50–80 dk', visible: true }
+    { id: 's1', icon: '01', title: 'Premium Cilt Bakımı', desc: 'Cilt tipi analizine göre özel protokol. Hydrafacial, oksijen, LED terapi.', price: '1.450 ₺ – 3.200 ₺', duration: '60–90 dk', visible: true },
+    { id: 's2', icon: '01', title: 'Kalıcı Makyaj', desc: 'Kaş microblading, powder brows, eyeliner ve dudak kontürü.', price: '3.500 ₺ – 6.500 ₺', duration: '2–3 saat', visible: true },
+    { id: 's3', icon: '03', title: 'Saç Tasarım & Renk', desc: 'Balayage, air-touch, keratin, botoks ve kişiye özel kesim.', price: '850 ₺ – 2.800 ₺', duration: '1.5–3 saat', visible: true },
+    { id: 's4', icon: '04', title: 'Manikür & Nail Art', desc: 'Klasik, jel, protez tırnak ve özel tasarım nail art.', price: '450 ₺ – 1.100 ₺', duration: '45–90 dk', visible: true },
+    { id: 's5', icon: '05', title: 'Lazer & Epilasyon', desc: 'Alexandrite lazer ile kadın ve erkek epilasyon.', price: 'Seans 900 ₺’den', duration: '15–60 dk', visible: true },
+    { id: 's6', icon: '06', title: 'Masaj & Spa', desc: 'Aromaterapi, hot stone ve derin doku masajı.', price: '950 ₺ – 1.800 ₺', duration: '50–80 dk', visible: true }
   ],
   gallery: [
     { id: 'g1', url: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80', alt: 'Klinik' },

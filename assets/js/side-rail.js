@@ -19,7 +19,7 @@
   function layout(activeIdx){
     if (!links.length) return;
     var H = track.clientHeight || rail.clientHeight || (window.innerHeight - 100);
-    var baseH = 32, activeH = 48, gap = 8, n = links.length;
+    var baseH = 36, activeH = 44, gap = 10, n = links.length;
     var yTop = 4;
     for (var i = 0; i < activeIdx; i++){
       links[i].classList.remove('on');

@@ -44,7 +44,7 @@
   (cfg.services || []).filter(s => s.visible !== false).forEach(s => {
     servicesGrid.innerHTML += `
       <div class="service-card">
-        <div class="service-icon">${s.icon || '✦'}</div>
+        <div class="service-icon"><span class="icon-mark">${escapeHtml(s.icon || '')}</span></div>
         <h3>${escapeHtml(s.title)}</h3>
         <p>${escapeHtml(s.desc)}</p>
         <div class="service-meta">
@@ -80,7 +80,7 @@
   (cfg.testimonials || []).forEach(t => {
     testiGrid.innerHTML += `
       <blockquote class="testi-card">
-        <div class="stars">${'★'.repeat(t.rating || 5)}</div>
+        <div class="stars" aria-label="${t.rating || 5} yildiz">${'<span class="star"></span>'.repeat(t.rating || 5)}</div>
         <p>“${escapeHtml(t.text)}”</p>
         <cite>— ${escapeHtml(t.name)}</cite>
       </blockquote>`;

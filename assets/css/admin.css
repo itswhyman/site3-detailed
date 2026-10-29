@@ -1,3 +1,4 @@
+[hidden] { display: none !important; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Outfit', system-ui, sans-serif; background: #f5f3ef; color: #2c2c2c; min-height: 100vh; }
 
@@ -24,7 +25,8 @@ body { font-family: 'Outfit', system-ui, sans-serif; background: #f5f3ef; color:
 .back-link { display: block; text-align: center; margin-top: 1rem; color: #C9A87C; font-size: .9rem; }
 .security-note { font-size: .75rem; color: #b45309; margin-top: 1.2rem; text-align: center; }
 
-.dashboard { display: flex; min-height: 100vh; }
+.dashboard { display: none; min-height: 100vh; }
+.dashboard.is-open, .dashboard:not([hidden]) { display: flex; }
 .sidebar {
   width: 240px; background: #1a1a1a; color: #eee; display: flex; flex-direction: column; flex-shrink: 0;
 }

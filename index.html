@@ -35,6 +35,7 @@
   </div>
 
   <main class="page-main">
+    <!-- HERO -->
     <section class="hero" id="hero">
       <div class="hero-bg" id="hero-bg"></div>
       <div class="container hero-content">
@@ -45,59 +46,80 @@
       </div>
     </section>
 
+    <!-- HİZMETLER: Alternating Timeline -->
     <section id="hizmetler" class="services">
       <div class="container">
         <div class="section-header">
-          <span class="section-label" data-blur-in>Hizmetler</span>
-          <h2 data-blur-in>Kapsamlı bakım menüsü</h2>
+          <span class="section-label">Hizmetler</span>
+          <h2>Kapsamlı bakım menüsü</h2>
         </div>
-        <div class="services-grid" id="services-grid"></div>
+        <div class="timeline" id="services-grid"></div>
       </div>
     </section>
 
+    <!-- GALERİ: Masonry -->
     <section id="galeri" class="gallery">
       <div class="container">
         <div class="section-header">
-          <span class="section-label" data-blur-in>Galeri</span>
-          <h2 data-blur-in>Klinik atmosferi</h2>
+          <span class="section-label">Galeri</span>
+          <h2>Klinik atmosferi</h2>
         </div>
-        <div class="gallery-grid" id="gallery-grid"></div>
+        <div class="masonry" id="gallery-grid"></div>
       </div>
     </section>
 
+    <!-- HAKKIMIZDA: Milestone -->
     <section id="hakkimizda" class="about">
-      <div class="container about-grid">
-        <div class="about-text">
-          <span class="section-label" data-blur-in>Hakkımızda</span>
-          <h2 id="about-title" data-blur-in></h2>
-          <p id="about-text" data-blur-in></p>
-          <ul class="about-features" id="about-features" data-blur-in></ul>
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Hakkımızda</span>
+          <h2 id="about-title"></h2>
         </div>
-        <div class="about-visual">
-          <img id="about-img" src="" alt="Klinik" class="about-img" data-mask-in>
+        <div class="about-milestones">
+          <div class="about-visual">
+            <img id="about-img" src="" alt="Klinik" class="about-img">
+          </div>
+          <div class="about-text">
+            <p id="about-text"></p>
+            <ul class="about-features" id="about-features"></ul>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- YORUMLAR: Minimal Liste + Form -->
     <section id="yorumlar" class="testimonials">
       <div class="container">
         <div class="section-header">
-          <span class="section-label" data-blur-in>Yorumlar</span>
-          <h2 data-blur-in>Misafir deneyimleri</h2>
+          <span class="section-label">Yorumlar</span>
+          <h2>Misafir deneyimleri</h2>
         </div>
-        <div class="testi-grid" id="testi-grid"></div>
+        <div class="testi-list" id="testi-grid"></div>
+
+        <div class="review-inline">
+          <h3>Deneyiminizi Paylaşın</h3>
+          <form class="review-form" id="review-form">
+            <div class="row-2">
+              <input type="text" name="name" placeholder="Adınız" required maxlength="40">
+              <input type="number" name="rating" min="1" max="5" value="5" placeholder="Puan" required>
+            </div>
+            <textarea name="text" placeholder="Yorumunuz..." rows="3" required maxlength="300"></textarea>
+            <button type="submit" class="btn btn-primary">Gönder</button>
+          </form>
+        </div>
       </div>
     </section>
 
+    <!-- İLETİŞİM: 3-Sütun Info + Form -->
     <section id="iletisim" class="contact">
       <div class="container">
         <div class="section-header">
-          <span class="section-label" data-blur-in>İletişim</span>
-          <h2 data-blur-in>Randevu & Danışmanlık</h2>
+          <span class="section-label">İletişim</span>
+          <h2>Randevu & Danışmanlık</h2>
         </div>
-        <div class="contact-grid">
-          <div class="contact-info" id="contact-info" data-blur-in></div>
-          <form class="contact-form" id="contact-form" data-blur-in>
+        <div class="contact-tri">
+          <div class="contact-info" id="contact-info"></div>
+          <form class="contact-form" id="contact-form">
             <input type="text" name="name" placeholder="Ad Soyad" required>
             <input type="tel" name="phone" placeholder="Telefon" required>
             <select name="service" id="form-services"></select>
@@ -123,7 +145,6 @@
   <script src="assets/js/defaults.js"></script>
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/public.js"></script>
-  <script src="assets/js/animations.js"></script>
   <script src="assets/js/side-rail.js"></script>
 </body>
 </html>

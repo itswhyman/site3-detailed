@@ -60,7 +60,6 @@
   }
   var last = -1;
   function onScroll(){
-    // FIX: navbar height - 10px overlap so no gap
     var navH = (nav && nav.offsetHeight) ? nav.offsetHeight : 72;
     rail.style.top = (navH - 10) + 'px';
     var idx = currentIdx();

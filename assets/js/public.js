@@ -19,7 +19,7 @@
   heroCta.textContent = cfg.hero.ctaText;
   heroCta.href = cfg.hero.ctaLink || '#iletisim';
   const heroBg = document.getElementById('hero-bg');
-  if (cfg.hero.image) { heroBg.style.backgroundImage = `url(${cfg.hero.image})`; heroBg.style.opacity = 1 - (cfg.hero.overlay || 0.3); }
+  if (cfg.hero.image) { heroBg.style.backgroundImage = `url(${cfg.hero.image})`; heroBg.style.opacity = 1 - (cfg.hero.overlay || 0.35); }
 
   // Services — timeline
   const servicesGrid = document.getElementById('services-grid');
@@ -43,11 +43,83 @@
     formServices.innerHTML += `<option>${esc(s.title)}</option>`;
   });
 
-  // Gallery — masonry
-  const galleryGrid = document.getElementById('gallery-grid');
-  (cfg.gallery || []).forEach(g => {
-    galleryGrid.innerHTML += `<figure class="masonry-item"><img src="${g.url}" alt="${esc(g.alt)}" loading="lazy" onerror="this.style.minHeight='200px';this.style.background='#eee'"></figure>`;
-  });
+  // ---- GALLERY SLIDER ----
+  const sliderStage = document.getElementById('slider-stage');
+  const sliderDots = document.getElementById('slider-dots');
+  const galleryItems = (cfg.gallery || []).filter(g => g.url);
+
+  if (sliderStage && galleryItems.length) {
+    galleryItems.forEach((g, i) => {
+      const div = document.createElement('div');
+      div.className = 'slide';
+      div.dataset.idx = i;
+      div.innerHTML = `<img src="${g.url}" alt="${esc(g.alt)}" loading="lazy">`;
+      sliderStage.appendChild(div);
+    });
+    const slides = Array.from(sliderStage.querySelectorAll('.slide'));
+    let current = 0;
+    let autoTimer = null;
+
+    if (sliderDots) {
+      sliderDots.innerHTML = '';
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'slider-dot';
+        dot.setAttribute('aria-label', `Slayt ${i + 1}`);
+        dot.addEventListener('click', () => { goTo(i); });
+        sliderDots.appendChild(dot);
+      });
+    }
+
+    function updateSlides() {
+      const n = slides.length;
+      slides.forEach((s, i) => {
+        s.className = 'slide';
+        const diff = ((i - current) % n + n) % n;
+        if (diff === 0) s.classList.add('active');
+        else if (diff === n - 1) s.classList.add('left');
+        else if (diff === 1) s.classList.add('right');
+        else s.classList.add('hidden');
+      });
+      if (sliderDots) {
+        sliderDots.querySelectorAll('.slider-dot').forEach((d, i) => {
+          d.classList.toggle('active', i === current);
+        });
+      }
+    }
+
+    function goTo(idx) {
+      current = ((idx % slides.length) + slides.length) % slides.length;
+      updateSlides();
+      restartAuto();
+    }
+    function next() { goTo(current + 1); }
+    function prev() { goTo(current - 1); }
+
+    function restartAuto() {
+      if (autoTimer) clearInterval(autoTimer);
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+      autoTimer = setInterval(next, 5000);
+    }
+
+    document.getElementById('gallery-next')?.addEventListener('click', next);
+    document.getElementById('gallery-prev')?.addEventListener('click', prev);
+
+    const sliderEl = document.getElementById('gallery-slider');
+    sliderEl?.addEventListener('mouseenter', () => autoTimer && clearInterval(autoTimer));
+    sliderEl?.addEventListener('mouseleave', restartAuto);
+
+    let touchStartX = 0;
+    sliderEl?.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    sliderEl?.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
+    }, { passive: true });
+
+    updateSlides();
+    restartAuto();
+  }
 
   // About
   document.getElementById('about-title').textContent = cfg.about.title;
@@ -90,7 +162,6 @@
     e.target.reset();
   });
 
-  // Star picker
   document.querySelectorAll('.star-picker').forEach(widget => {
     const btns = widget.querySelectorAll('.star-btn');
     const hidden = widget.closest('form').querySelector('input[name="rating"]');
@@ -100,26 +171,14 @@
     btns.forEach((btn, i) => {
       btn.addEventListener('mouseenter', () => paint(i + 1));
       btn.addEventListener('mouseleave', () => paint(current));
-      btn.addEventListener('click', () => {
-        current = i + 1;
-        widget.dataset.rating = current;
-        if (hidden) hidden.value = current;
-        paint(current);
-      });
+      btn.addEventListener('click', () => { current = i + 1; widget.dataset.rating = current; if (hidden) hidden.value = current; paint(current); });
     });
   });
 
-  // Review form
   document.getElementById('review-form').addEventListener('submit', e => {
     e.preventDefault();
     const f = e.target;
-    const review = {
-      id: 't' + Date.now(),
-      name: f.name.value.trim(),
-      text: f.text.value.trim(),
-      rating: Math.min(5, Math.max(1, parseInt(f.rating.value) || 5)),
-      approved: false
-    };
+    const review = { id: 't' + Date.now(), name: f.name.value.trim(), text: f.text.value.trim(), rating: Math.min(5, Math.max(1, parseInt(f.rating.value) || 5)), approved: false };
     if (!review.name || !review.text) return;
     const fresh = Storage.load();
     if (!fresh.testimonials) fresh.testimonials = [];
@@ -133,7 +192,7 @@
     }
   });
 
-  // ---- Animations (slow & calm) ----
+  // Animations
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = window.matchMedia('(max-width: 900px)').matches;
 
@@ -151,14 +210,13 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
     }, { threshold: 0.08, rootMargin: '0px 0px 5% 0px' });
     document.querySelectorAll('.timeline-item').forEach((el, i) => { el.style.transitionDelay = (i*90)+'ms'; io.observe(el); });
-    document.querySelectorAll('.masonry-item').forEach((el, i) => { el.style.transitionDelay = (i*100)+'ms'; io.observe(el); });
     document.querySelectorAll('.testi-row').forEach((el, i) => { el.style.transitionDelay = (i*100)+'ms'; io.observe(el); });
     const aboutImg = document.getElementById('about-img'); if (aboutImg) io.observe(aboutImg);
     const aboutFeats = document.getElementById('about-features'); if (aboutFeats) io.observe(aboutFeats);
     const contactInfo = document.getElementById('contact-info'); if (contactInfo) io.observe(contactInfo);
 
     setTimeout(() => {
-      document.querySelectorAll('.timeline-item, .masonry-item, .testi-row, .about-img, .about-features, .contact-info').forEach(el => el.classList.add('is-visible'));
+      document.querySelectorAll('.timeline-item, .testi-row, .about-img, .about-features, .contact-info').forEach(el => el.classList.add('is-visible'));
     }, 2500);
 
     if (!isMobile) {
@@ -175,7 +233,7 @@
       }, { passive: true });
     }
   } else {
-    document.querySelectorAll('.timeline-item, .masonry-item, .testi-row, .about-img, .about-features, .contact-info').forEach(el => el.classList.add('is-visible'));
+    document.querySelectorAll('.timeline-item, .testi-row, .about-img, .about-features, .contact-info').forEach(el => el.classList.add('is-visible'));
   }
 
   function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }

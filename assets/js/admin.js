@@ -72,6 +72,7 @@
     renderTestimonials();
     bindActions();
     updateColorPreview();
+    markActivePreset();
   }
 
   function bindTabs() {
@@ -256,6 +257,18 @@
     if (Storage.save(cfg)) showToast('Değişiklikler kaydedildi');
   }
 
+  function markActivePreset() {
+    const PRESETS_MATCH = {
+      elegant: '#C9A87C', rose: '#D4A5A5', modern: '#E84A7F', clinic: '#2A9D8F'
+    };
+    const currentPrimary = (cfg.colors?.primary || '').toUpperCase();
+    document.querySelectorAll('[data-preset]').forEach(card => {
+      const key = card.getAttribute('data-preset');
+      const targetPrimary = (PRESETS_MATCH[key] || '').toUpperCase();
+      card.classList.toggle('active', currentPrimary === targetPrimary);
+    });
+  }
+
   function bindActions() {
     document.getElementById('btn-save')?.addEventListener('click', () => autoSave());
 
@@ -263,6 +276,7 @@
       if (!confirm('TÜM ayarlar varsayılana sıfırlanacak. Emin misiniz?')) return;
       cfg = Storage.reset();
       fillFields(); renderServices(); renderGallery(); renderTestimonials(); updateColorPreview();
+      markActivePreset();
       showToast('Sıfırlandı');
     });
 
@@ -296,7 +310,7 @@
       Storage.importJSON(file).then(data => {
         cfg = data;
         Storage.save(cfg);
-        fillFields(); renderServices(); renderGallery(); renderTestimonials(); updateColorPreview();
+        fillFields(); renderServices(); renderGallery(); renderTestimonials(); updateColorPreview(); markActivePreset();
         showToast('İçe aktarıldı');
       }).catch(err => alert('Hata: ' + err.message));
     });
@@ -332,22 +346,66 @@
       }).catch(err => alert(err.message));
     });
 
+    // ---- 4 TEMİZ PRESET ----
+    const PRESETS = {
+      elegant: {
+        name: 'Elegant Gold',
+        colors: {
+          primary: '#C9A87C', primaryDark: '#A88B5E', secondary: '#F8F1E9',
+          accent: '#E8D5C4', text: '#2C2C2C', textLight: '#6B6B6B',
+          bg: '#FDFBF8', card: '#FFFFFF', dark: '#1A1A1A',
+          navbarBg: 'rgba(253,251,248,0.96)',
+          footerBg: '#1A1A1A', footerText: '#C9A87C'
+        }
+      },
+      rose: {
+        name: 'Rose Champagne',
+        colors: {
+          primary: '#D4A5A5', primaryDark: '#B07A7A', secondary: '#F9F0F0',
+          accent: '#E8D0D0', text: '#3D2C2C', textLight: '#7A6A6A',
+          bg: '#FDF8F8', card: '#FFFFFF', dark: '#2A1F1F',
+          navbarBg: 'rgba(253,248,248,0.96)',
+          footerBg: '#2A1F1F', footerText: '#D4A5A5'
+        }
+      },
+      modern: {
+        name: 'Modern Dark',
+        colors: {
+          primary: '#E84A7F', primaryDark: '#C23A68', secondary: '#4A1942',
+          accent: '#2D1B2E', text: '#F5F0F2', textLight: '#C9B8C0',
+          bg: '#1A0F1C', card: '#241528', dark: '#0D080E',
+          navbarBg: 'rgba(36,21,40,0.92)',
+          footerBg: '#0D080E', footerText: '#E84A7F'
+        }
+      },
+      clinic: {
+        name: 'Clinic Sage',
+        colors: {
+          primary: '#2A9D8F', primaryDark: '#1D7A6F', secondary: '#E9F5F3',
+          accent: '#CBE5E0', text: '#1A2E2B', textLight: '#4A6560',
+          bg: '#F7FBFA', card: '#FFFFFF', dark: '#0F1F1C',
+          navbarBg: 'rgba(15,31,28,0.96)',
+          footerBg: '#0F1F1C', footerText: '#2A9D8F'
+        }
+      }
+    };
+
     document.querySelectorAll('[data-preset]').forEach(btn => {
       btn.addEventListener('click', () => {
-        const presets = {
-          elegant: { primary: '#C9A87C', primaryDark: '#A88B5E', secondary: '#F8F1E9', accent: '#E8D5C4', text: '#2C2C2C', textLight: '#6B6B6B', bg: '#FDFBF8', dark: '#1A1A1A', card: '#FFFFFF' },
-          rose: { primary: '#D4A5A5', primaryDark: '#B07A7A', secondary: '#F9F0F0', accent: '#E8D0D0', text: '#3D2C2C', textLight: '#7A6A6A', bg: '#FDF8F8', dark: '#2A1F1F', card: '#FFFFFF' },
-          modern: { primary: '#E84A7F', primaryDark: '#C23A68', secondary: '#4A1942', accent: '#2D1B2E', text: '#F5F0F2', textLight: '#C9B8C0', bg: '#1A0F1C', dark: '#0D080E', card: '#241528' },
-          clinic: { primary: '#2A9D8F', primaryDark: '#1D7A6F', secondary: '#E9F5F3', accent: '#CBE5E0', text: '#1A2E2B', textLight: '#4A6560', bg: '#F7FBFA', dark: '#0F1F1C', card: '#FFFFFF' }
-        };
-        const p = presets[btn.getAttribute('data-preset')];
-        if (p) { cfg.colors = Object.assign({}, cfg.colors, p); fillFields(); updateColorPreview(); autoSave(); }
+        const key = btn.getAttribute('data-preset');
+        const p = PRESETS[key];
+        if (!p) return;
+        cfg.colors = Object.assign({}, cfg.colors, p.colors);
+        fillFields(); updateColorPreview(); autoSave();
+        showToast(p.name + ' uygulandı');
+        document.querySelectorAll('[data-preset]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
       });
     });
 
     document.querySelectorAll('[data-path^="colors."]').forEach(el => {
       el.addEventListener('input', updateColorPreview);
-      el.addEventListener('change', autoSave);
+      el.addEventListener('change', () => { autoSave(); markActivePreset(); });
     });
   }
 })();

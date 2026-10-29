@@ -1,14 +1,11 @@
-/* Bulletproof storage with deep merge + image compression */
 const Storage = {
   getKey() {
     return (window.SITE_DEFAULTS && window.SITE_DEFAULTS.siteKey) || 'beauty_default';
   },
-
   clone(obj) {
     try { return structuredClone(obj); }
     catch (e) { return JSON.parse(JSON.stringify(obj)); }
   },
-
   load() {
     try {
       const raw = localStorage.getItem(this.getKey());
@@ -20,7 +17,6 @@ const Storage = {
       return this.clone(window.SITE_DEFAULTS);
     }
   },
-
   save(config) {
     try {
       localStorage.setItem(this.getKey(), JSON.stringify(config));
@@ -31,22 +27,19 @@ const Storage = {
       return false;
     }
   },
-
   reset() {
     localStorage.removeItem(this.getKey());
     return this.clone(window.SITE_DEFAULTS);
   },
-
   exportJSON(config) {
     const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = (config.business?.name || 'config').toLowerCase().replace(/\s+/g,'-') + '-backup.json';
+    a.download = (config.business?.name || 'config').toLowerCase().replace(/\s+/g, '-') + '-backup.json';
     a.click();
     URL.revokeObjectURL(url);
   },
-
   importJSON(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -61,23 +54,16 @@ const Storage = {
       reader.readAsText(file);
     });
   },
-
   merge(target, source) {
     if (!source || typeof source !== 'object') return target;
     for (const key in source) {
       if (source[key] === null) { target[key] = null; continue; }
-      if (Array.isArray(source[key])) {
-        target[key] = source[key];
-      } else if (typeof source[key] === 'object') {
-        target[key] = this.merge(target[key] || {}, source[key]);
-      } else {
-        target[key] = source[key];
-      }
+      if (Array.isArray(source[key])) target[key] = source[key];
+      else if (typeof source[key] === 'object') target[key] = this.merge(target[key] || {}, source[key]);
+      else target[key] = source[key];
     }
     return target;
   },
-
-  // Compress image to avoid storage bloat
   fileToDataURL(file, maxW = 1200, quality = 0.82) {
     return new Promise((resolve, reject) => {
       if (!file.type.startsWith('image/')) return reject(new Error('Sadece resim'));

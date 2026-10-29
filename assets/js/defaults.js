@@ -13,7 +13,9 @@ window.SITE_DEFAULTS = {
   colors: {
     primary: '#2A9D8F', primaryDark: '#1D7A6F', secondary: '#E9F5F3',
     accent: '#CBE5E0', text: '#1A2E2B', textLight: '#4A6560',
-    bg: '#F7FBFA', white: '#FFFFFF', dark: '#0F1F1C', card: '#FFFFFF'
+    bg: '#F7FBFA', white: '#FFFFFF', dark: '#0F1F1C', card: '#FFFFFF',
+    navbarBg: 'rgba(15,31,28,0.96)',
+    footerBg: '#0F1F1C', footerText: '#2A9D8F'
   },
   hero: {
     title: 'Cildinizin ve ruhunuzun hak ettiği özen',

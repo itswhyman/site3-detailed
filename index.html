@@ -35,7 +35,6 @@
   </div>
 
   <main class="page-main">
-    <!-- HERO -->
     <section class="hero" id="hero">
       <div class="hero-bg" id="hero-bg"></div>
       <div class="container hero-content">
@@ -46,7 +45,6 @@
       </div>
     </section>
 
-    <!-- HİZMETLER: Alternating Timeline -->
     <section id="hizmetler" class="services">
       <div class="container">
         <div class="section-header">
@@ -57,18 +55,23 @@
       </div>
     </section>
 
-    <!-- GALERİ: Masonry -->
     <section id="galeri" class="gallery">
       <div class="container">
         <div class="section-header">
           <span class="section-label">Galeri</span>
           <h2>Klinik atmosferi</h2>
         </div>
-        <div class="masonry" id="gallery-grid"></div>
+      </div>
+      <div class="gallery-slider-wrap">
+        <div class="gallery-slider" id="gallery-slider">
+          <button class="slider-arrow prev" id="gallery-prev" aria-label="Önceki">‹</button>
+          <div class="slider-stage" id="slider-stage"></div>
+          <button class="slider-arrow next" id="gallery-next" aria-label="Sonraki">›</button>
+        </div>
+        <div class="slider-dots" id="slider-dots"></div>
       </div>
     </section>
 
-    <!-- HAKKIMIZDA: Milestone -->
     <section id="hakkimizda" class="about">
       <div class="container">
         <div class="section-header">
@@ -87,7 +90,6 @@
       </div>
     </section>
 
-    <!-- YORUMLAR: Minimal Liste + Form -->
     <section id="yorumlar" class="testimonials">
       <div class="container">
         <div class="section-header">
@@ -97,22 +99,36 @@
         <div class="testi-list" id="testi-grid"></div>
 
         <div class="review-inline">
-          <h3>Deneyiminizi Paylaşın</h3>
+          <div class="review-head">
+            <h3>Deneyiminizi Paylaşın</h3>
+            <p>Görüşleriniz bizim için değerli. Yorumunuz onaylandıktan sonra yayınlanır.</p>
+          </div>
           <form class="review-form" id="review-form">
-            <div class="row-2">
-              <input type="text" name="name" placeholder="Adınız" required maxlength="40">
-              <input type="number" name="rating" min="1" max="5" value="5" placeholder="Puan" required>
+            <div class="review-row">
+              <input type="text" name="name" placeholder="Adınız Soyadınız" required maxlength="40">
             </div>
-            <textarea name="text" placeholder="Yorumunuz..." rows="3" required maxlength="300"></textarea>
-            <button type="submit" class="btn btn-primary">Gönder</button>
+            <div class="star-picker-wrap">
+              <span class="star-picker-label">Puanınız:</span>
+              <div class="star-picker" data-rating="5">
+                <button type="button" class="star-btn" data-v="1" aria-label="1 yıldız"></button>
+                <button type="button" class="star-btn" data-v="2" aria-label="2 yıldız"></button>
+                <button type="button" class="star-btn" data-v="3" aria-label="3 yıldız"></button>
+                <button type="button" class="star-btn" data-v="4" aria-label="4 yıldız"></button>
+                <button type="button" class="star-btn" data-v="5" aria-label="5 yıldız"></button>
+              </div>
+              <input type="hidden" name="rating" value="5">
+            </div>
+            <textarea name="text" placeholder="Deneyiminizi anlatın..." rows="4" required maxlength="300"></textarea>
+            <button type="submit" class="btn btn-primary">Yorumu Gönder</button>
           </form>
         </div>
       </div>
     </section>
 
-    <!-- İLETİŞİM: 3-Sütun Info + Form -->
     <section id="iletisim" class="contact">
-      <div class="container">
+      <div class="contact-deco contact-deco-1"></div>
+      <div class="contact-deco contact-deco-2"></div>
+      <div class="container contact-inner">
         <div class="section-header">
           <span class="section-label">İletişim</span>
           <h2>Randevu & Danışmanlık</h2>

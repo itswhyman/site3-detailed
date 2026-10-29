@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Velvet & Bloom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+  <div id="login-screen" class="login-screen">
+    <div class="login-box">
+      <h1>Admin Girişi</h1>
+      <p class="sub">Velvet & Bloom – Demo</p>
+      <div id="login-error" class="error" hidden></div>
+      <form id="login-form">
+        <label>Kullanıcı adı</label>
+        <input type="text" id="login-user" value="admin" required>
+        <label>Şifre</label>
+        <input type="password" id="login-pass" required>
+        <button type="submit">Giriş Yap</button>
+      </form>
+      <p class="hint">Demo: admin / admin123</p>
+      <a href="index.html" class="back-link">← Siteye dön</a>
+      <p class="security-note">⚠ Frontend-only kimlik doğrulama. Üretim için güvenli değildir.</p>
+    </div>
+  </div>
+
+  <div id="dashboard" class="dashboard" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-brand">VELVET Admin</div>
+      <nav class="sidebar-nav">
+        <button data-tab="general" class="active">Genel</button>
+        <button data-tab="colors">Renkler</button>
+        <button data-tab="hero">Hero</button>
+        <button data-tab="services">Hizmetler</button>
+        <button data-tab="gallery">Galeri</button>
+        <button data-tab="about">Hakkımızda</button>
+        <button data-tab="testimonials">Yorumlar</button>
+        <button data-tab="seo">SEO & Sosyal</button>
+        <button data-tab="backup">Yedek / Dışa Aktar</button>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="index.html" target="_blank">Siteyi Görüntüle</a>
+        <button id="btn-logout">Çıkış</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="main-header">
+        <h2 id="tab-title">Genel Ayarlar</h2>
+        <div class="header-actions">
+          <button id="btn-reset" class="btn-outline">Varsayılana Sıfırla</button>
+          <button id="btn-save" class="btn-primary">Kaydet</button>
+        </div>
+      </header>
+
+      <div class="notice">
+        Değişiklikler bu tarayıcıda localStorage’a kaydedilir ve hemen yansır. Diğer ziyaretçiler veya cihazlar için JSON export + dosya güncellemesi gerekir.
+      </div>
+
+      <!-- GENERAL -->
+      <section class="tab-panel active" data-panel="general">
+        <div class="form-grid">
+          <div class="field"><label>Firma Adı</label><input type="text" data-path="business.name"></div>
+          <div class="field"><label>Logo Metni</label><input type="text" data-path="business.logoText"></div>
+          <div class="field full"><label>Slogan / Tagline</label><input type="text" data-path="business.tagline"></div>
+          <div class="field"><label>Telefon</label><input type="text" data-path="business.phone"></div>
+          <div class="field"><label>WhatsApp (90532...)</label><input type="text" data-path="business.whatsapp"></div>
+          <div class="field"><label>E-posta</label><input type="email" data-path="business.email"></div>
+          <div class="field full"><label>Adres</label><input type="text" data-path="business.address"></div>
+          <div class="field full"><label>Çalışma Saatleri</label><input type="text" data-path="business.hours"></div>
+          <div class="field full">
+            <label>Logo Yükle (max 1.5 MB)</label>
+            <input type="file" id="logo-upload" accept="image/*">
+            <div id="logo-preview" class="img-preview"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLORS -->
+      <section class="tab-panel" data-panel="colors">
+        <div class="presets">
+          <button type="button" data-preset="elegant">Elegant Gold</button>
+          <button type="button" data-preset="rose">Rose Champagne</button>
+          <button type="button" data-preset="ivory">Pure Ivory</button>
+        </div>
+        <div class="form-grid colors-grid">
+          <div class="field"><label>Primary</label><input type="color" data-path="colors.primary"></div>
+          <div class="field"><label>Primary Dark</label><input type="color" data-path="colors.primaryDark"></div>
+          <div class="field"><label>Secondary</label><input type="color" data-path="colors.secondary"></div>
+          <div class="field"><label>Accent</label><input type="color" data-path="colors.accent"></div>
+          <div class="field"><label>Text</label><input type="color" data-path="colors.text"></div>
+          <div class="field"><label>Text Light</label><input type="color" data-path="colors.textLight"></div>
+          <div class="field"><label>Background</label><input type="color" data-path="colors.bg"></div>
+          <div class="field"><label>Dark</label><input type="color" data-path="colors.dark"></div>
+        </div>
+        <div class="live-preview" id="color-preview">
+          <div class="preview-card">
+            <span class="preview-label">Önizleme</span>
+            <h3>Başlık Örneği</h3>
+            <p>Bu metin seçilen renklerle görünür.</p>
+            <button class="preview-btn">Buton</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- HERO -->
+      <section class="tab-panel" data-panel="hero">
+        <div class="form-grid">
+          <div class="field full"><label>Başlık</label><input type="text" data-path="hero.title"></div>
+          <div class="field full"><label>Alt Yazı</label><textarea data-path="hero.subtitle" rows="3"></textarea></div>
+          <div class="field"><label>Buton Metni</label><input type="text" data-path="hero.ctaText"></div>
+          <div class="field"><label>Buton Linki</label><input type="text" data-path="hero.ctaLink"></div>
+          <div class="field full">
+            <label>Hero Görseli (URL veya yükle)</label>
+            <input type="text" data-path="hero.image" placeholder="https://...">
+            <input type="file" id="hero-upload" accept="image/*" style="margin-top:.5rem">
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section class="tab-panel" data-panel="services">
+        <div id="services-list"></div>
+        <button type="button" id="add-service" class="btn-outline">+ Hizmet Ekle</button>
+      </section>
+
+      <!-- GALLERY -->
+      <section class="tab-panel" data-panel="gallery">
+        <div id="gallery-list"></div>
+        <div class="field" style="margin-top:1rem">
+          <label>Yeni görsel ekle (URL)</label>
+          <div style="display:flex;gap:.5rem">
+            <input type="text" id="new-gallery-url" placeholder="https://...">
+            <button type="button" id="add-gallery" class="btn-primary">Ekle</button>
+          </div>
+          <input type="file" id="gallery-upload" accept="image/*" style="margin-top:.5rem">
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="tab-panel" data-panel="about">
+        <div class="form-grid">
+          <div class="field full"><label>Başlık</label><input type="text" data-path="about.title"></div>
+          <div class="field full"><label>Metin</label><textarea data-path="about.text" rows="4"></textarea></div>
+          <div class="field full"><label>Özellikler (her satır bir madde)</label><textarea id="about-features-text" rows="4"></textarea></div>
+          <div class="field full"><label>Görsel URL</label><input type="text" data-path="about.image"></div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section class="tab-panel" data-panel="testimonials">
+        <div id="testi-list"></div>
+        <button type="button" id="add-testi" class="btn-outline">+ Yorum Ekle</button>
+      </section>
+
+      <!-- SEO -->
+      <section class="tab-panel" data-panel="seo">
+        <div class="form-grid">
+          <div class="field full"><label>SEO Başlık</label><input type="text" data-path="seo.title"></div>
+          <div class="field full"><label>SEO Açıklama</label><textarea data-path="seo.description" rows="2"></textarea></div>
+          <div class="field"><label>Instagram URL</label><input type="text" data-path="business.social.instagram"></div>
+          <div class="field"><label>Facebook URL</label><input type="text" data-path="business.social.facebook"></div>
+          <div class="field"><label>TikTok URL</label><input type="text" data-path="business.social.tiktok"></div>
+        </div>
+      </section>
+
+      <!-- BACKUP -->
+      <section class="tab-panel" data-panel="backup">
+        <p>Yapılandırmayı JSON olarak indir. Bu dosyayı başka bir cihazda import ederek aynı ayarları yükleyebilirsin.</p>
+        <div style="display:flex;gap:1rem;margin:1.5rem 0;flex-wrap:wrap">
+          <button type="button" id="btn-export" class="btn-primary">JSON Dışa Aktar</button>
+          <label class="btn-outline" style="cursor:pointer">
+            JSON İçe Aktar
+            <input type="file" id="import-file" accept=".json" hidden>
+          </label>
+        </div>
+        <div class="notice">
+          <strong>Yayınlama notu:</strong> localStorage sadece bu tarayıcıda çalışır. Canlı site için JSON’u indirip geliştiriciye vererek defaults.js dosyasını güncellemesini isteyin veya sunucuya statik dosya olarak deploy edin.
+        </div>
+      </section>
+
+      <div id="save-toast" class="toast" hidden>Kaydedildi ✓</div>
+    </main>
+  </div>
+
+  <script src="assets/js/defaults.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin | Velvet & Bloom</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/admin.css">
 </head>
 <body>
   <div id="login-screen" class="login-screen">
     <div class="login-box">
-      <h1>Admin Girişi</h1>
+      <h1>Yönetici Girişi</h1>
       <p class="sub">Velvet & Bloom</p>
       <div id="login-error" class="error" hidden></div>
       <form id="login-form">
         <label>Kullanıcı adı</label>
         <input type="text" id="login-user" value="admin" required>
         <label>Şifre</label>
-        <input type="password" id="login-pass" required>
+        <input type="password" id="login-pass" placeholder="••••••••" required>
         <button type="submit">Giriş Yap</button>
       </form>
       <a href="index.html" class="back-link">← Siteye dön</a>
@@ -39,59 +39,89 @@
         <button data-tab="backup">Yedek</button>
       </nav>
       <div class="sidebar-footer">
-        <a href="index.html" target="_blank">Siteyi Görüntüle</a>
-        <button id="btn-logout">Çıkış</button>
+        <a href="index.html" target="_blank">↗ Siteyi Görüntüle</a>
+        <button id="btn-logout">Çıkış Yap</button>
       </div>
     </aside>
 
     <main class="main">
       <header class="main-header">
-        <h2 id="tab-title">Genel Ayarlar</h2>
+        <div>
+          <h2 id="tab-title">Genel Ayarlar</h2>
+          <p class="subtitle">Her değişiklik otomatik kaydedilir</p>
+        </div>
         <div class="header-actions">
           <button id="btn-reset" class="btn-outline">Sıfırla</button>
           <button id="btn-save" class="btn-primary">Kaydet</button>
         </div>
       </header>
 
-      <div class="notice">Değişiklikler otomatik olarak localStorage'a kaydedilir ve aynı tarayıcıda anında yansır.</div>
+      <div class="notice">
+        <strong>ℹ Bilgi:</strong> Değişiklikler bu tarayıcının localStorage'ına yazılır ve aynı tarayıcıda siteyi yenilediğinde yansır. Başka ziyaretçiler için "Yedek" sekmesinden JSON indirip `defaults.js` dosyasını güncellemen gerekir.
+      </div>
 
+      <!-- GENEL -->
       <section class="tab-panel active" data-panel="general">
+        <div class="section-intro">
+          <strong>Firma & İletişim Bilgileri</strong>
+          Bu alandaki bilgiler sitenin navbar, footer ve iletişim bölümünde görünür. Logo metni boşsa firma adı kullanılır.
+        </div>
         <div class="form-grid">
-          <div class="field"><label>Firma Adı</label><input type="text" data-path="business.name"></div>
-          <div class="field"><label>Logo Metni</label><input type="text" data-path="business.logoText"></div>
-          <div class="field full"><label>Slogan</label><input type="text" data-path="business.tagline"></div>
-          <div class="field"><label>Telefon</label><input type="text" data-path="business.phone"></div>
-          <div class="field"><label>WhatsApp</label><input type="text" data-path="business.whatsapp"></div>
-          <div class="field"><label>E-posta</label><input type="email" data-path="business.email"></div>
-          <div class="field full"><label>Adres</label><input type="text" data-path="business.address"></div>
-          <div class="field full"><label>Saatler</label><input type="text" data-path="business.hours"></div>
+          <div class="field">
+            <label>Firma Adı</label>
+            <input type="text" data-path="business.name">
+            <small class="field-help">Footer telif hakkı ve SEO başlığında kullanılır.</small>
+          </div>
+          <div class="field">
+            <label>Logo Metni</label>
+            <input type="text" data-path="business.logoText">
+            <small class="field-help">Navbar'da görünen marka yazısı (örn. "LUMINA").</small>
+          </div>
           <div class="field full">
-            <label>Logo Yükle</label>
+            <label>Slogan</label>
+            <input type="text" data-path="business.tagline">
+            <small class="field-help">Footer'da görünen kısa tanıtım cümlesi.</small>
+          </div>
+          <div class="field"><label>Telefon</label><input type="text" data-path="business.phone"></div>
+          <div class="field"><label>WhatsApp (905XX…)</label><input type="text" data-path="business.whatsapp"></div>
+          <div class="field"><label>E-posta</label><input type="email" data-path="business.email"></div>
+          <div class="field"><label>Çalışma Saatleri</label><input type="text" data-path="business.hours"></div>
+          <div class="field full"><label>Adres</label><input type="text" data-path="business.address"></div>
+          <div class="field full">
+            <label>Logo Görseli (opsiyonel)</label>
             <input type="file" id="logo-upload" accept="image/*">
+            <small class="field-help">Yüklersen navbar'da metin yerine bu görsel görünür.</small>
             <div id="logo-preview" class="img-preview"></div>
           </div>
         </div>
       </section>
 
+      <!-- RENKLER -->
       <section class="tab-panel" data-panel="colors">
+        <div class="section-intro">
+          <strong>Renk Paleti</strong>
+          <code>background</code> sayfa arka planını, <code>card</code> kart/panel renklerini kontrol eder. İkisini ayrı ayrı değiştirebilirsin.
+        </div>
         <div class="presets">
           <button type="button" data-preset="elegant">Elegant Gold</button>
           <button type="button" data-preset="rose">Rose</button>
-          <button type="button" data-preset="ivory">Ivory</button>
+          <button type="button" data-preset="modern">Modern Dark</button>
+          <button type="button" data-preset="clinic">Clinic</button>
         </div>
         <div class="form-grid colors-grid">
-          <div class="field"><label>Primary</label><input type="color" data-path="colors.primary"></div>
+          <div class="field"><label>Primary (vurgu)</label><input type="color" data-path="colors.primary"></div>
           <div class="field"><label>Primary Dark</label><input type="color" data-path="colors.primaryDark"></div>
-          <div class="field"><label>Secondary</label><input type="color" data-path="colors.secondary"></div>
-          <div class="field"><label>Accent</label><input type="color" data-path="colors.accent"></div>
-          <div class="field"><label>Text</label><input type="color" data-path="colors.text"></div>
-          <div class="field"><label>Text Light</label><input type="color" data-path="colors.textLight"></div>
-          <div class="field"><label>Background</label><input type="color" data-path="colors.bg"></div>
-          <div class="field"><label>Dark</label><input type="color" data-path="colors.dark"></div>
+          <div class="field"><label>Secondary (ara arka plan)</label><input type="color" data-path="colors.secondary"></div>
+          <div class="field"><label>Accent (kenarlık)</label><input type="color" data-path="colors.accent"></div>
+          <div class="field"><label>Metin</label><input type="color" data-path="colors.text"></div>
+          <div class="field"><label>Metin (soluk)</label><input type="color" data-path="colors.textLight"></div>
+          <div class="field"><label>Sayfa Arka Planı</label><input type="color" data-path="colors.bg"></div>
+          <div class="field"><label>Kart / Panel Rengi</label><input type="color" data-path="colors.card"></div>
+          <div class="field"><label>Koyu (footer / başlık)</label><input type="color" data-path="colors.dark"></div>
         </div>
         <div class="live-preview">
           <div class="preview-card">
-            <span class="preview-label">Önizleme</span>
+            <span class="preview-label">Canlı Önizleme</span>
             <h3>Başlık Örneği</h3>
             <p>Bu metin seçilen renklerle görünür.</p>
             <button class="preview-btn">Buton</button>
@@ -99,69 +129,111 @@
         </div>
       </section>
 
+      <!-- HERO -->
       <section class="tab-panel" data-panel="hero">
+        <div class="section-intro">
+          <strong>Hero (Anasayfa Üst Bölümü)</strong>
+          Sitenin ilk gördüğü alandır. Görsel URL'sini değiştir veya dosya yükle.
+        </div>
         <div class="form-grid">
           <div class="field full"><label>Başlık</label><input type="text" data-path="hero.title"></div>
           <div class="field full"><label>Alt Yazı</label><textarea data-path="hero.subtitle" rows="3"></textarea></div>
           <div class="field"><label>Buton Metni</label><input type="text" data-path="hero.ctaText"></div>
           <div class="field"><label>Buton Linki</label><input type="text" data-path="hero.ctaLink"></div>
           <div class="field full">
-            <label>Hero Görseli</label>
+            <label>Hero Görseli (URL)</label>
             <input type="text" data-path="hero.image" placeholder="https://...">
             <input type="file" id="hero-upload" accept="image/*" style="margin-top:.5rem">
+            <small class="field-help">Önerilen: en az 1600x1000, yatay fotoğraf.</small>
           </div>
         </div>
       </section>
 
+      <!-- HİZMETLER -->
       <section class="tab-panel" data-panel="services">
+        <div class="section-intro">
+          <strong>Hizmetler</strong>
+          Her hizmet kart olarak sitede görünür. "Görünür" işaretini kaldırırsan sitede saklanır ama admin'de kalır.
+        </div>
         <div id="services-list"></div>
-        <button type="button" id="add-service" class="btn-outline">+ Hizmet Ekle</button>
+        <button type="button" id="add-service" class="btn-outline">+ Yeni Hizmet Ekle</button>
       </section>
 
+      <!-- GALERİ -->
       <section class="tab-panel" data-panel="gallery">
+        <div class="section-intro">
+          <strong>Galeri</strong>
+          Sıralama önemlidir — ilk görsel büyük olarak gösterilir (Site 1 bento, Site 2 marquee, Site 3 masonry).
+        </div>
         <div id="gallery-list"></div>
-        <div class="field" style="margin-top:1rem">
-          <label>Yeni Görsel (URL)</label>
+        <div class="field" style="margin-top:1.2rem">
+          <label>Yeni Görsel URL</label>
           <div style="display:flex;gap:.5rem">
             <input type="text" id="new-gallery-url" placeholder="https://...">
             <button type="button" id="add-gallery" class="btn-primary">Ekle</button>
           </div>
-          <input type="file" id="gallery-upload" accept="image/*" style="margin-top:.5rem">
+          <label style="margin-top:.8rem">veya dosya yükle</label>
+          <input type="file" id="gallery-upload" accept="image/*">
         </div>
       </section>
 
+      <!-- HAKKIMIZDA -->
       <section class="tab-panel" data-panel="about">
+        <div class="section-intro">
+          <strong>Hakkımızda</strong>
+          Siteye özgü split/sticky/timeline düzeninde render edilir. Özellikler listesi her satıra bir madde olacak şekilde girilir.
+        </div>
         <div class="form-grid">
           <div class="field full"><label>Başlık</label><input type="text" data-path="about.title"></div>
-          <div class="field full"><label>Metin</label><textarea data-path="about.text" rows="4"></textarea></div>
-          <div class="field full"><label>Özellikler (her satır bir madde)</label><textarea id="about-features-text" rows="4"></textarea></div>
+          <div class="field full"><label>Açıklama Metni</label><textarea data-path="about.text" rows="5"></textarea></div>
+          <div class="field full">
+            <label>Özellikler (her satır bir madde)</label>
+            <textarea id="about-features-text" rows="5"></textarea>
+          </div>
           <div class="field full"><label>Görsel URL</label><input type="text" data-path="about.image"></div>
         </div>
       </section>
 
+      <!-- YORUMLAR -->
       <section class="tab-panel" data-panel="testimonials">
+        <div class="section-intro">
+          <strong>Yorumlar</strong>
+          Ziyaretçi yorumları "onay bekliyor" durumunda gelir. Buradan "Onaylı" kutusunu işaretlersen sitede görünür.
+        </div>
         <div id="testi-list"></div>
-        <button type="button" id="add-testi" class="btn-outline">+ Yorum Ekle</button>
+        <button type="button" id="add-testi" class="btn-outline">+ Yeni Yorum Ekle</button>
       </section>
 
+      <!-- SEO -->
       <section class="tab-panel" data-panel="seo">
+        <div class="section-intro">
+          <strong>SEO & Sosyal Medya</strong>
+          Arama motoru sonuçlarında ve paylaşımlarda görünen bilgiler.
+        </div>
         <div class="form-grid">
-          <div class="field full"><label>SEO Başlık</label><input type="text" data-path="seo.title"></div>
-          <div class="field full"><label>SEO Açıklama</label><textarea data-path="seo.description" rows="2"></textarea></div>
-          <div class="field"><label>Instagram</label><input type="text" data-path="business.social.instagram"></div>
-          <div class="field"><label>Facebook</label><input type="text" data-path="business.social.facebook"></div>
-          <div class="field"><label>TikTok</label><input type="text" data-path="business.social.tiktok"></div>
+          <div class="field full"><label>Sayfa Başlığı</label><input type="text" data-path="seo.title"></div>
+          <div class="field full"><label>Meta Açıklama</label><textarea data-path="seo.description" rows="2"></textarea></div>
+          <div class="field"><label>Instagram URL</label><input type="text" data-path="business.social.instagram"></div>
+          <div class="field"><label>Facebook URL</label><input type="text" data-path="business.social.facebook"></div>
+          <div class="field"><label>TikTok URL</label><input type="text" data-path="business.social.tiktok"></div>
         </div>
       </section>
 
+      <!-- YEDEK -->
       <section class="tab-panel" data-panel="backup">
-        <p>Yapılandırmayı JSON olarak indir / içe aktar.</p>
+        <div class="section-intro">
+          <strong>Yedekle & İçe Aktar</strong>
+          JSON dosyası tüm ayarları (renkler, hizmetler, galeri, yorumlar) içerir. Başka cihaza taşıyabilir veya `defaults.js`'i güncelleyebilirsin.
+        </div>
         <div style="display:flex;gap:1rem;margin:1.5rem 0;flex-wrap:wrap">
-          <button type="button" id="btn-export" class="btn-primary">JSON Dışa Aktar</button>
+          <button type="button" id="btn-export" class="btn-primary">⬇ JSON İndir</button>
           <label class="btn-outline" style="cursor:pointer">
-            JSON İçe Aktar
+            ⬆ JSON Yükle
             <input type="file" id="import-file" accept=".json" hidden>
           </label>
+        </div>
+        <div class="notice">
+          <strong>Yayınlama notu:</strong> localStorage sadece bu tarayıcıda çalışır. Canlı site için JSON'u indirip <code>defaults.js</code>'i güncelleyerek sunucuya yeniden deploy etmen gerekir.
         </div>
       </section>
 

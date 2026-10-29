@@ -1,4 +1,3 @@
-/* Side rail — absolute layout with soft motion */
 (function(){
   var nav = document.getElementById('topNav');
   var rail = document.getElementById('sideRail');
@@ -61,8 +60,9 @@
   }
   var last = -1;
   function onScroll(){
+    // FIX: navbar height - 10px overlap so no gap
     var navH = (nav && nav.offsetHeight) ? nav.offsetHeight : 72;
-    rail.style.top = (navH + 16) + 'px';
+    rail.style.top = (navH - 10) + 'px';
     var idx = currentIdx();
     if (idx !== last || last < 0){ last = idx; layout(idx); }
   }

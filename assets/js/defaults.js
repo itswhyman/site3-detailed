@@ -19,14 +19,14 @@ window.SITE_DEFAULTS = {
     title: 'Cildinizin ve ruhunuzun hak ettiği özen',
     subtitle: 'Kadıköy’ün kalbinde, kişiye özel protokollere sahip premium güzellik kliniği.',
     ctaText: 'Ücretsiz Danışmanlık', ctaLink: '#iletisim',
-    image: 'https://images.unsplash.com/photo-1629909615184-74f495363b67?w=1600&q=80',
-    overlay: 0.4
+    image: 'https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=1600&q=80',
+    overlay: 0.35
   },
   about: {
     title: 'Velvet & Bloom hikayesi',
     text: '2017’de küçük bir stüdyo olarak başladık. Bugün Kadıköy’ün en çok tercih edilen premium güzellik merkezlerinden biri olduk. Hijyen, uzmanlık ve samimiyet bizim kırmızı çizgimiz.',
     features: ['Kişiye özel protokol ve danışmanlık', 'Sterilizasyon ve tek kullanımlık ürünler', 'Sürekli eğitim alan uzman kadro', 'Şeffaf fiyatlandırma'],
-    image: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=1000&q=80'
+    image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1400&q=80'
   },
   services: [
     { id: 's1', icon: '01', title: 'Premium Cilt Bakımı', desc: 'Cilt tipi analizine göre özel protokol. Hydrafacial, oksijen, LED terapi.', price: '1.450 ₺', duration: '60 dk', visible: true },

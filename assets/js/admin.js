@@ -21,18 +21,13 @@
   function isLoggedIn() {
     try { return sessionStorage.getItem(SESSION_KEY) === '1'; } catch (e) { return false; }
   }
-
   function doLogin(u, p) {
     const ok = (u === HARD_USER && p === HARD_PASS) ||
                (cfg.admin && u === cfg.admin.user && p === cfg.admin.pass);
     if (ok) { try { sessionStorage.setItem(SESSION_KEY, '1'); } catch(e){} return true; }
     return false;
   }
-
-  function doLogout() {
-    try { sessionStorage.removeItem(SESSION_KEY); } catch(e){}
-    location.reload();
-  }
+  function doLogout() { try { sessionStorage.removeItem(SESSION_KEY); } catch(e){} location.reload(); }
 
   function showDashboard() {
     const login = document.getElementById('login-screen');
@@ -41,7 +36,6 @@
     if (dash) { dash.hidden = false; dash.style.display = 'flex'; dash.classList.add('is-open'); }
     try { initDashboard(); } catch (err) { console.error(err); }
   }
-
   function showLogin() {
     const login = document.getElementById('login-screen');
     const dash = document.getElementById('dashboard');
@@ -60,7 +54,7 @@
         if (doLogin(u, p)) showDashboard();
         else {
           const err = document.getElementById('login-error');
-          if (err) { err.textContent = 'Hatalı giriş.'; err.hidden = false; err.style.display = 'block'; }
+          if (err) { err.textContent = 'Kullanıcı adı veya şifre hatalı.'; err.hidden = false; err.style.display = 'block'; }
         }
       });
     }
@@ -88,14 +82,13 @@
         btn.classList.add('active');
         const tab = btn.getAttribute('data-tab');
         document.querySelector(`[data-panel="${tab}"]`)?.classList.add('active');
-        document.getElementById('tab-title').textContent = btn.textContent;
+        const title = document.getElementById('tab-title');
+        if (title) title.textContent = btn.textContent.trim();
       });
     });
   }
 
-  function getByPath(obj, path) {
-    return path.split('.').reduce((o, k) => o ? o[k] : undefined, obj);
-  }
+  function getByPath(obj, path) { return path.split('.').reduce((o, k) => o ? o[k] : undefined, obj); }
   function setByPath(obj, path, value) {
     const keys = path.split('.');
     let cur = obj;
@@ -131,9 +124,7 @@
     }
   }
 
-  function escapeAttr(s) {
-    return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-  }
+  function escapeAttr(s) { return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
   function renderServices() {
     const list = document.getElementById('services-list');
@@ -167,7 +158,7 @@
     });
     list.querySelectorAll('[data-remove-service]').forEach(btn => {
       btn.addEventListener('click', () => {
-        if (!confirm('Silinsin mi?')) return;
+        if (!confirm('Bu hizmet silinsin mi?')) return;
         cfg.services.splice(+btn.getAttribute('data-remove-service'), 1);
         renderServices(); autoSave();
       });
@@ -183,19 +174,16 @@
       div.className = 'gallery-item-admin';
       div.innerHTML = `
         <img class="gallery-thumb" src="${escapeAttr(g.url)}" alt="">
-        <input type="text" value="${escapeAttr(g.alt)}" data-gi="${i}" placeholder="Alt text">
+        <input type="text" value="${escapeAttr(g.alt)}" data-gi="${i}" placeholder="Alt metin (SEO)">
         <div class="actions"><button type="button" class="danger" data-remove-gallery="${i}">Sil</button></div>`;
       list.appendChild(div);
     });
     list.querySelectorAll('[data-gi]').forEach(el => {
-      el.addEventListener('change', () => {
-        cfg.gallery[+el.getAttribute('data-gi')].alt = el.value;
-        autoSave();
-      });
+      el.addEventListener('change', () => { cfg.gallery[+el.getAttribute('data-gi')].alt = el.value; autoSave(); });
     });
     list.querySelectorAll('[data-remove-gallery]').forEach(btn => {
       btn.addEventListener('click', () => {
-        if (!confirm('Silinsin mi?')) return;
+        if (!confirm('Bu görsel silinsin mi?')) return;
         cfg.gallery.splice(+btn.getAttribute('data-remove-gallery'), 1);
         renderGallery(); autoSave();
       });
@@ -216,7 +204,7 @@
           <div class="field"><label>Puan (1-5)</label><input type="number" min="1" max="5" value="${t.rating || 5}" data-ti="${i}" data-field="rating"></div>
         </div>
         <div class="actions">
-          <label><input type="checkbox" data-ti="${i}" data-field="approved" ${t.approved !== false ? 'checked' : ''}> Onaylı</label>
+          <label><input type="checkbox" data-ti="${i}" data-field="approved" ${t.approved !== false ? 'checked' : ''}> Onaylı (sitede görünür)</label>
           <button type="button" class="danger" data-remove-testi="${i}">Sil</button>
         </div>`;
       list.appendChild(div);
@@ -225,7 +213,7 @@
       el.addEventListener('change', () => {
         const i = +el.getAttribute('data-ti');
         const f = el.getAttribute('data-field');
-        if (f === 'rating') cfg.testimonials[i].rating = +el.value;
+        if (f === 'rating') cfg.testimonials[i].rating = Math.min(5, Math.max(1, +el.value || 5));
         else if (f === 'approved') cfg.testimonials[i].approved = el.checked;
         else cfg.testimonials[i][f] = el.value;
         autoSave();
@@ -233,7 +221,7 @@
     });
     list.querySelectorAll('[data-remove-testi]').forEach(btn => {
       btn.addEventListener('click', () => {
-        if (!confirm('Silinsin mi?')) return;
+        if (!confirm('Bu yorum silinsin mi?')) return;
         cfg.testimonials.splice(+btn.getAttribute('data-remove-testi'), 1);
         renderTestimonials(); autoSave();
       });
@@ -259,7 +247,8 @@
     toast.textContent = msg;
     toast.hidden = false;
     toast.style.display = 'block';
-    setTimeout(() => { toast.hidden = true; toast.style.display = 'none'; }, 1800);
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => { toast.hidden = true; toast.style.display = 'none'; }, 1800);
   }
 
   function autoSave() {
@@ -268,12 +257,10 @@
   }
 
   function bindActions() {
-    document.getElementById('btn-save')?.addEventListener('click', () => {
-      autoSave();
-    });
+    document.getElementById('btn-save')?.addEventListener('click', () => autoSave());
 
     document.getElementById('btn-reset')?.addEventListener('click', () => {
-      if (!confirm('Tüm ayarlar sıfırlanacak. Emin misin?')) return;
+      if (!confirm('TÜM ayarlar varsayılana sıfırlanacak. Emin misiniz?')) return;
       cfg = Storage.reset();
       fillFields(); renderServices(); renderGallery(); renderTestimonials(); updateColorPreview();
       showToast('Sıfırlandı');
@@ -301,10 +288,7 @@
       renderTestimonials(); autoSave();
     });
 
-    document.getElementById('btn-export')?.addEventListener('click', () => {
-      collectFields();
-      Storage.exportJSON(cfg);
-    });
+    document.getElementById('btn-export')?.addEventListener('click', () => { collectFields(); Storage.exportJSON(cfg); });
 
     document.getElementById('import-file')?.addEventListener('change', (e) => {
       const file = e.target.files?.[0];
@@ -317,10 +301,8 @@
       }).catch(err => alert('Hata: ' + err.message));
     });
 
-    // Image uploads with size constraint
     document.getElementById('logo-upload')?.addEventListener('change', (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+      const file = e.target.files?.[0]; if (!file) return;
       Storage.fileToDataURL(file, 400).then(data => {
         if (!cfg.business) cfg.business = {};
         cfg.business.logoImage = data;
@@ -331,8 +313,7 @@
     });
 
     document.getElementById('hero-upload')?.addEventListener('change', (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+      const file = e.target.files?.[0]; if (!file) return;
       Storage.fileToDataURL(file, 1600).then(data => {
         if (!cfg.hero) cfg.hero = {};
         cfg.hero.image = data;
@@ -343,8 +324,7 @@
     });
 
     document.getElementById('gallery-upload')?.addEventListener('change', (e) => {
-      const file = e.target.files?.[0];
-      if (!file) return;
+      const file = e.target.files?.[0]; if (!file) return;
       Storage.fileToDataURL(file, 1000).then(data => {
         if (!cfg.gallery) cfg.gallery = [];
         cfg.gallery.push({ id: 'g' + Date.now(), url: data, alt: file.name });
@@ -355,11 +335,10 @@
     document.querySelectorAll('[data-preset]').forEach(btn => {
       btn.addEventListener('click', () => {
         const presets = {
-          elegant: { primary: '#C9A87C', primaryDark: '#A88B5E', secondary: '#F8F1E9', accent: '#E8D5C4', text: '#2C2C2C', textLight: '#6B6B6B', bg: '#FDFBF8', dark: '#1A1A1A' },
-          rose: { primary: '#D4A5A5', primaryDark: '#B07A7A', secondary: '#F9F0F0', accent: '#E8D0D0', text: '#3D2C2C', textLight: '#7A6A6A', bg: '#FDF8F8', dark: '#2A1F1F' },
-          ivory: { primary: '#B8A99A', primaryDark: '#8C7B6B', secondary: '#F5F2EB', accent: '#E5DFD4', text: '#333', textLight: '#666', bg: '#FFFEFB', dark: '#222' },
+          elegant: { primary: '#C9A87C', primaryDark: '#A88B5E', secondary: '#F8F1E9', accent: '#E8D5C4', text: '#2C2C2C', textLight: '#6B6B6B', bg: '#FDFBF8', dark: '#1A1A1A', card: '#FFFFFF' },
+          rose: { primary: '#D4A5A5', primaryDark: '#B07A7A', secondary: '#F9F0F0', accent: '#E8D0D0', text: '#3D2C2C', textLight: '#7A6A6A', bg: '#FDF8F8', dark: '#2A1F1F', card: '#FFFFFF' },
           modern: { primary: '#E84A7F', primaryDark: '#C23A68', secondary: '#4A1942', accent: '#2D1B2E', text: '#F5F0F2', textLight: '#C9B8C0', bg: '#1A0F1C', dark: '#0D080E', card: '#241528' },
-          clinic: { primary: '#2A9D8F', primaryDark: '#1D7A6F', secondary: '#E9F5F3', accent: '#CBE5E0', text: '#1A2E2B', textLight: '#4A6560', bg: '#F7FBFA', dark: '#0F1F1C' }
+          clinic: { primary: '#2A9D8F', primaryDark: '#1D7A6F', secondary: '#E9F5F3', accent: '#CBE5E0', text: '#1A2E2B', textLight: '#4A6560', bg: '#F7FBFA', dark: '#0F1F1C', card: '#FFFFFF' }
         };
         const p = presets[btn.getAttribute('data-preset')];
         if (p) { cfg.colors = Object.assign({}, cfg.colors, p); fillFields(); updateColorPreview(); autoSave(); }

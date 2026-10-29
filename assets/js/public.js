@@ -7,7 +7,7 @@
   if (md) md.content = cfg.seo?.description || cfg.business.tagline;
 
   const logoEl = document.getElementById('logo');
-  if (cfg.business.logoImage) logoEl.innerHTML = `<img src="${cfg.business.logoImage}" alt="${cfg.business.name}" style="height:36px">`;
+  if (cfg.business.logoImage) logoEl.innerHTML = `<img src="${cfg.business.logoImage}" alt="${cfg.business.name}" style="height:38px">`;
   else logoEl.textContent = cfg.business.logoText || cfg.business.name;
   document.getElementById('footer-logo').textContent = cfg.business.logoText || cfg.business.name;
   document.getElementById('footer-tagline').textContent = cfg.business.tagline;
@@ -21,7 +21,7 @@
   const heroBg = document.getElementById('hero-bg');
   if (cfg.hero.image) { heroBg.style.backgroundImage = `url(${cfg.hero.image})`; heroBg.style.opacity = 1 - (cfg.hero.overlay || 0.3); }
 
-  // Services — alternating timeline
+  // Services — timeline
   const servicesGrid = document.getElementById('services-grid');
   const formServices = document.getElementById('form-services');
   formServices.innerHTML = '<option value="">Hizmet seçin</option>';
@@ -46,7 +46,7 @@
   // Gallery — masonry
   const galleryGrid = document.getElementById('gallery-grid');
   (cfg.gallery || []).forEach(g => {
-    galleryGrid.innerHTML += `<figure class="masonry-item"><img src="${g.url}" alt="${esc(g.alt)}" loading="lazy"></figure>`;
+    galleryGrid.innerHTML += `<figure class="masonry-item"><img src="${g.url}" alt="${esc(g.alt)}" loading="lazy" onerror="this.style.minHeight='200px';this.style.background='#eee'"></figure>`;
   });
 
   // About
@@ -90,6 +90,25 @@
     e.target.reset();
   });
 
+  // Star picker
+  document.querySelectorAll('.star-picker').forEach(widget => {
+    const btns = widget.querySelectorAll('.star-btn');
+    const hidden = widget.closest('form').querySelector('input[name="rating"]');
+    let current = parseInt(widget.dataset.rating) || 5;
+    function paint(v) { btns.forEach((b, i) => b.classList.toggle('filled', i < v)); }
+    paint(current);
+    btns.forEach((btn, i) => {
+      btn.addEventListener('mouseenter', () => paint(i + 1));
+      btn.addEventListener('mouseleave', () => paint(current));
+      btn.addEventListener('click', () => {
+        current = i + 1;
+        widget.dataset.rating = current;
+        if (hidden) hidden.value = current;
+        paint(current);
+      });
+    });
+  });
+
   // Review form
   document.getElementById('review-form').addEventListener('submit', e => {
     e.preventDefault();
@@ -108,6 +127,9 @@
     if (Storage.save(fresh)) {
       alert('Yorumunuz alındı! Yönetici onayından sonra yayınlanacak.');
       f.reset();
+      f.querySelectorAll('.star-btn').forEach((b, i) => b.classList.toggle('filled', i < 5));
+      f.querySelector('input[name="rating"]').value = 5;
+      f.querySelector('.star-picker').dataset.rating = 5;
     }
   });
 
@@ -127,13 +149,17 @@
   if (!reduce) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
-    }, { threshold: 0.15, rootMargin: '0px 0px -7% 0px' });
-    document.querySelectorAll('.timeline-item').forEach((el, i) => { el.style.transitionDelay = (i*95)+'ms'; io.observe(el); });
-    document.querySelectorAll('.masonry-item').forEach((el, i) => { el.style.transitionDelay = (i*110)+'ms'; io.observe(el); });
-    document.querySelectorAll('.testi-row').forEach((el, i) => { el.style.transitionDelay = (i*110)+'ms'; io.observe(el); });
-    document.getElementById('about-img') && io.observe(document.getElementById('about-img'));
-    document.getElementById('about-features') && io.observe(document.getElementById('about-features'));
-    document.getElementById('contact-info') && io.observe(document.getElementById('contact-info'));
+    }, { threshold: 0.08, rootMargin: '0px 0px 5% 0px' });
+    document.querySelectorAll('.timeline-item').forEach((el, i) => { el.style.transitionDelay = (i*90)+'ms'; io.observe(el); });
+    document.querySelectorAll('.masonry-item').forEach((el, i) => { el.style.transitionDelay = (i*100)+'ms'; io.observe(el); });
+    document.querySelectorAll('.testi-row').forEach((el, i) => { el.style.transitionDelay = (i*100)+'ms'; io.observe(el); });
+    const aboutImg = document.getElementById('about-img'); if (aboutImg) io.observe(aboutImg);
+    const aboutFeats = document.getElementById('about-features'); if (aboutFeats) io.observe(aboutFeats);
+    const contactInfo = document.getElementById('contact-info'); if (contactInfo) io.observe(contactInfo);
+
+    setTimeout(() => {
+      document.querySelectorAll('.timeline-item, .masonry-item, .testi-row, .about-img, .about-features, .contact-info').forEach(el => el.classList.add('is-visible'));
+    }, 2500);
 
     if (!isMobile) {
       const bg = document.getElementById('hero-bg');
@@ -142,7 +168,7 @@
         if (ticking) return;
         requestAnimationFrame(() => {
           const y = window.scrollY;
-          if (y < window.innerHeight && bg) bg.style.transform = `translateY(${y*0.18}px) scale(1.05)`;
+          if (y < window.innerHeight && bg) bg.style.transform = `translateY(${y*0.18}px) scale(1.06)`;
           ticking = false;
         });
         ticking = true;

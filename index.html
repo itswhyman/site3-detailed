@@ -6,131 +6,125 @@
   <title>Velvet & Bloom Clinic</title>
   <meta name="description" content="">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="site-clinic">
 
-  <!-- SITE 3: Fixed left vertical sidebar navigation -->
-  <aside class="sidebar-nav" id="sidebar-nav">
-    <div class="sidebar-brand">
+  <!-- Top bar (logo + CTA) — side-rail sits below this -->
+  <header class="top-bar" id="topNav">
+    <div class="top-bar-inner">
       <a href="#" class="logo" id="logo">VELVET</a>
+      <div class="top-bar-actions">
+        <a href="admin.html" class="admin-link" title="Admin">⚙</a>
+        <a href="#iletisim" class="btn btn-sm" id="header-cta">Randevu</a>
+      </div>
     </div>
-    <nav class="nav nav--vertical">
-      <a href="#hizmetler"><span class="nav-icon">✦</span> Hizmetler</a>
-      <a href="#galeri"><span class="nav-icon">▣</span> Galeri</a>
-      <a href="#hakkimizda"><span class="nav-icon">◎</span> Hakkımızda</a>
-      <a href="#yorumlar"><span class="nav-icon">★</span> Yorumlar</a>
-      <a href="#iletisim"><span class="nav-icon">✉</span> İletişim</a>
-    </nav>
-    <div class="sidebar-bottom">
-      <a href="admin.html" class="admin-link">⚙ Admin</a>
-      <a href="#iletisim" class="btn btn-sm" id="header-cta">Randevu</a>
-    </div>
-  </aside>
-
-  <!-- Mobile top bar (only visible on small screens) -->
-  <header class="mobile-bar" id="mobile-bar">
-    <a href="#" class="logo" id="logo-mobile">VELVET</a>
-    <button type="button" class="menu-toggle" id="menu-toggle" aria-label="Menü">☰</button>
   </header>
 
-  <div class="page-with-sidebar">
-    <main>
-      <section class="hero" id="hero">
-        <div class="hero-bg" id="hero-bg"></div>
-        <div class="container hero-content">
-          <p class="hero-eyebrow">Premium Güzellik Kliniği</p>
-          <h1 id="hero-title">Cildinizin ve ruhunuzun hak ettiği özen</h1>
-          <p class="hero-sub" id="hero-sub"></p>
-          <a href="#iletisim" class="btn btn-primary" id="hero-cta">Ücretsiz Danışmanlık</a>
-        </div>
-      </section>
-
-      <section id="hizmetler" class="services">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-label">Hizmetler</span>
-            <h2>Kapsamlı bakım menüsü</h2>
-          </div>
-          <div class="services-grid" id="services-grid"></div>
-        </div>
-      </section>
-
-      <section id="galeri" class="gallery">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-label">Galeri</span>
-            <h2>Klinik atmosferi</h2>
-          </div>
-          <div class="gallery-grid" id="gallery-grid"></div>
-        </div>
-      </section>
-
-      <section id="hakkimizda" class="about">
-        <div class="container about-grid">
-          <div class="about-text">
-            <span class="section-label">Hakkımızda</span>
-            <h2 id="about-title"></h2>
-            <p id="about-text"></p>
-            <ul class="about-features" id="about-features"></ul>
-          </div>
-          <div class="about-visual">
-            <img id="about-img" src="" alt="Klinik" class="about-img">
-          </div>
-        </div>
-      </section>
-
-      <section id="yorumlar" class="testimonials">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-label">Yorumlar</span>
-            <h2>Misafir deneyimleri</h2>
-          </div>
-          <div class="testi-grid" id="testi-grid"></div>
-        </div>
-      </section>
-
-      <section id="iletisim" class="contact">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-label">İletişim</span>
-            <h2>Randevu & Danışmanlık</h2>
-          </div>
-          <div class="contact-grid">
-            <div class="contact-info" id="contact-info"></div>
-            <form class="contact-form" id="contact-form">
-              <input type="text" name="name" placeholder="Ad Soyad" required>
-              <input type="tel" name="phone" placeholder="Telefon" required>
-              <select name="service" id="form-services"></select>
-              <textarea name="message" rows="4" placeholder="Mesajınız"></textarea>
-              <button type="submit" class="btn btn-primary">Gönder</button>
-            </form>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <div class="container footer-inner">
-        <div class="footer-brand">
-          <span class="logo-text" id="footer-logo">VELVET</span>
-          <p id="footer-tagline"></p>
-        </div>
-        <div class="footer-social" id="footer-social"></div>
-        <p class="footer-copy" id="footer-copy"></p>
-      </div>
-    </footer>
+  <!-- Side rail (absolute animated section links) -->
+  <aside class="side-rail" id="sideRail" aria-label="Sections">
+    <div class="rail-track" id="railTrack"></div>
+  </aside>
+  <div id="railLinksSource" hidden>
+    <a href="#hero" data-sec="hero" class="rail-home">Ana Sayfa</a>
+    <a href="#hizmetler" data-sec="hizmetler">Hizmetler</a>
+    <a href="#galeri" data-sec="galeri">Galeri</a>
+    <a href="#hakkimizda" data-sec="hakkimizda">Hakkımızda</a>
+    <a href="#yorumlar" data-sec="yorumlar">Yorumlar</a>
+    <a href="#iletisim" data-sec="iletisim">İletişim</a>
+    <a href="#footer" data-sec="footer">Bilgi</a>
   </div>
+
+  <main class="page-main">
+    <section class="hero" id="hero">
+      <div class="hero-bg" id="hero-bg"></div>
+      <div class="container hero-content">
+        <p class="hero-eyebrow">Premium Güzellik Kliniği</p>
+        <h1 id="hero-title">Cildinizin ve ruhunuzun hak ettiği özen</h1>
+        <p class="hero-sub" id="hero-sub"></p>
+        <a href="#iletisim" class="btn btn-primary" id="hero-cta">Ücretsiz Danışmanlık</a>
+      </div>
+    </section>
+
+    <section id="hizmetler" class="services">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Hizmetler</span>
+          <h2>Kapsamlı bakım menüsü</h2>
+        </div>
+        <div class="services-grid" id="services-grid"></div>
+      </div>
+    </section>
+
+    <section id="galeri" class="gallery">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Galeri</span>
+          <h2>Klinik atmosferi</h2>
+        </div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+      </div>
+    </section>
+
+    <section id="hakkimizda" class="about">
+      <div class="container about-grid">
+        <div class="about-text">
+          <span class="section-label">Hakkımızda</span>
+          <h2 id="about-title"></h2>
+          <p id="about-text"></p>
+          <ul class="about-features" id="about-features"></ul>
+        </div>
+        <div class="about-visual">
+          <img id="about-img" src="" alt="Klinik" class="about-img">
+        </div>
+      </div>
+    </section>
+
+    <section id="yorumlar" class="testimonials">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">Yorumlar</span>
+          <h2>Misafir deneyimleri</h2>
+        </div>
+        <div class="testi-grid" id="testi-grid"></div>
+      </div>
+    </section>
+
+    <section id="iletisim" class="contact">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label">İletişim</span>
+          <h2>Randevu & Danışmanlık</h2>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-info" id="contact-info"></div>
+          <form class="contact-form" id="contact-form">
+            <input type="text" name="name" placeholder="Ad Soyad" required>
+            <input type="tel" name="phone" placeholder="Telefon" required>
+            <select name="service" id="form-services"></select>
+            <textarea name="message" rows="4" placeholder="Mesajınız"></textarea>
+            <button type="submit" class="btn btn-primary">Gönder</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text" id="footer-logo">VELVET</span>
+        <p id="footer-tagline"></p>
+      </div>
+      <div class="footer-social" id="footer-social"></div>
+      <p class="footer-copy" id="footer-copy"></p>
+    </div>
+  </footer>
 
   <script src="assets/js/defaults.js"></script>
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/public.js"></script>
-  <script>
-    // Mobile sidebar toggle for site3
-    document.getElementById('menu-toggle')?.addEventListener('click', () => {
-      document.getElementById('sidebar-nav').classList.toggle('open');
-    });
-  </script>
+  <script src="assets/js/side-rail.js"></script>
 </body>
 </html>
